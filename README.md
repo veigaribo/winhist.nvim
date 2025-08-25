@@ -5,6 +5,8 @@ navigation.
 
 ## Installation
 
+Adjust to your liking.
+
 ### lazy.nvim
 
 ```lua
@@ -13,6 +15,15 @@ navigation.
 return {
 	'veigaribo/winhist.nvim',
 	lazy = false, -- Start tracking histories as soon as possible.
+
+	---@module 'winhist'
+	---@type WinHistOptions
+	opts = {
+		-- Maximum history size *per window*, in number of buffers.
+		-- Default is 100.
+		max_history_height = 100,
+	},
+
 	config = function()
 		local winhist = require('winhist')
 		winhist.setup()
