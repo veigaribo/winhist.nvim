@@ -104,6 +104,25 @@ function M.next()
 	end
 end
 
+---Unregisters windows that don't exist in case they managed to avoid
+---being removed automatically.
+function M.prune()
+	local windows = vim.api.nvim_list_wins()
+
+	---@type integer[]
+	local ghosts = {}
+
+	for window, _ in pairs(M.histories) do
+		if not vim.tbl_contains(windows, window, nil) then
+			ghosts[#ghosts + 1] = window
+		end
+	end
+
+	for _, ghost in ipairs(ghosts) do
+		M.histories[ghost] = nil
+	end
+end
+
 ---Prints the histories, for troubleshooting.
 function M.dump()
 	vim.print(M.histories)

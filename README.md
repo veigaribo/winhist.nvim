@@ -34,6 +34,21 @@ return {
 		vim.keymap.set('n', '<leader>b]', winhist.next)
 		-- Print the histories, if you are curious.
 		vim.keymap.set('n', '<leader>b?', winhist.dump)
+
+		winhist.dump()
 	end,
 }
 ```
+
+## Know issues
+
+There seems to be some way to destroy windows that this plugin is not
+detecting. So, over time, it may end up tracking more windows than there
+actually are. If you notice that's happening to you, you can run the
+`prune` function like so:
+
+```vim
+:lua require('winhist').prune()
+```
+
+This should remove tracking for every nonexistent window.
