@@ -24,9 +24,9 @@ return {
 		max_history_height = 100,
 	},
 
-	config = function()
+	config = function(_, opts)
 		local winhist = require('winhist')
-		winhist.setup()
+		winhist.setup(opts)
 
 		-- Load the previous buffer.
 		vim.keymap.set('n', '<leader>b[', winhist.previous)

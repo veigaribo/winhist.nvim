@@ -16,10 +16,10 @@ local M = {
 }
 
 ---@class WinHistOptions
----@field max_history_height integer Maximum amount of buffers to store per window.
+---@field max_history_height? integer Maximum amount of buffers to store per window.
 
 ---Registers present and future windows and tracks their buffer accesses.
----@param opts WinHistOptions
+---@param opts? WinHistOptions
 function M.setup(opts)
 	if opts ~= nil then
 		if opts.max_history_height then
