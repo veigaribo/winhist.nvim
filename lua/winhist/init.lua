@@ -138,7 +138,7 @@ end
 ---@param buffer integer
 function M._hist_push(window, buffer)
 	if M.histories[window] == nil then
-		M._add_window(window)
+		return
 	end
 
 	-- If reloading the same buffer, don't do anything
