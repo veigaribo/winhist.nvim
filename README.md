@@ -34,8 +34,6 @@ return {
 		vim.keymap.set('n', '<leader>b]', winhist.next)
 		-- Print the histories, if you are curious.
 		vim.keymap.set('n', '<leader>b?', winhist.dump)
-
-		winhist.dump()
 	end,
 }
 ```
