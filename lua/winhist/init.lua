@@ -101,8 +101,7 @@ function M.next()
 end
 
 ---Unregisters windows that don't exist in case they managed to avoid
----being removed automatically. This was useful on the very first release,
----but should just be an artifact now.
+---being removed automatically.
 function M.prune()
 	local windows = vim.api.nvim_list_wins()
 
