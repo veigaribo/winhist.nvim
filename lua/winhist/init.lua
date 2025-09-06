@@ -9,7 +9,7 @@ local M = {
 
 	---True if this plugin is causing a buffer change. Used to prevent us
 	---affecting the histories ourselves when navigating.
-	is_self_moving = false,
+	is_self_navigating = false,
 
 	---@see WinHistOptions
 	max_history_height = 100,
@@ -59,11 +59,11 @@ function M.setup(opts)
 			local window = vim.api.nvim_get_current_win()
 			local buffer = args.buf
 
-			if not M.is_self_moving then
+			if not M.is_self_navigating then
 				M._hist_push(window, buffer)
 			end
 
-			M.is_self_moving = false
+			M.is_self_navigating = false
 		end,
 	})
 end
@@ -78,9 +78,7 @@ function M.previous()
 		history.idx = history.idx - 1
 		local head_buf = M._hist_head(history)
 
-		if vim.api.nvim_buf_is_valid(head_buf) then
-			M.is_self_moving = true
-			vim.api.nvim_win_set_buf(window, head_buf)
+		if M._navigate_if_valid(window, head_buf) then
 			break
 		end
 	end
@@ -96,9 +94,7 @@ function M.next()
 		history.idx = history.idx + 1
 		local head_buf = M._hist_head(history)
 
-		if vim.api.nvim_buf_is_valid(head_buf) then
-			M.is_self_moving = true
-			vim.api.nvim_win_set_buf(window, head_buf)
+		if M._navigate_if_valid(window, head_buf) then
 			break
 		end
 	end
@@ -137,13 +133,27 @@ end
 
 ---@param window integer
 ---@param buffer integer
+---@return boolean was_valid
+function M._navigate_if_valid(window, buffer)
+	if vim.api.nvim_buf_is_valid(buffer) then
+		M.is_self_navigating = true
+		vim.api.nvim_win_set_buf(window, buffer)
+		return true
+	end
+
+	return false
+end
+
+---@param window integer
+---@param buffer integer
 function M._hist_push(window, buffer)
-	if M.histories[window] == nil then
+	local history = M.histories[window]
+
+	if history == nil then
 		return
 	end
 
 	-- If reloading the same buffer, don't do anything
-	local history = M.histories[window]
 	if M._hist_head(history) == buffer then
 		return
 	end
