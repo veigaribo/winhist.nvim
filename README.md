@@ -38,7 +38,7 @@ return {
 }
 ```
 
-## Know issues
+## Known issues
 
 There seems to be some way to destroy windows that this plugin is not
 detecting. So, over time, it may end up tracking more windows than there
